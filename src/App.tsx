@@ -1,25 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useEffect } from 'react';
+import { Container } from 'react-bootstrap';
 import './App.css';
+import { useAppContext } from './AppContext';
+import QuestionCard from './components/QuestionCard';
+import questionData from './question-data';
 
 function App() {
+  const {state,dispatch} = useAppContext();
+
+  useEffect(()=>{
+    dispatch({type:'setQuestions',payload:questionData.questions})
+  },[dispatch])
+
+  const activeQuestion = state.questions[state.activeQuestionIndex];
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container className='center'>
+      {activeQuestion && <QuestionCard
+        key = {activeQuestion.questionid}
+      />}
+    </Container>
   );
 }
 
